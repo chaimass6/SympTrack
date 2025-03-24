@@ -23,7 +23,7 @@ gsap.to("#svg", {
     duration: 3.5,  
     onComplete: function() {
         setTimeout(() => {
-            window.location.href = "sym.html"; 
+            window.location.href = "symp.html"; 
         }, 1000); // Adjust delay if needed
     }
 });
