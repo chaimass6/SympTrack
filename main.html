@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SympTRACK - AI Symptom Checker</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f0f8ff;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #0066cc;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    h1 {
+      margin: 0;
+      font-size: 32px;
+    }
+    .section {
+      display: none;
+      padding: 30px;
+      background-color: #ffffff;
+      border-radius: 15px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+      width: 90%;
+      max-width: 800px;
+      margin: 30px auto;
+    }
+    input, button {
+      padding: 12px 15px;
+      width: 80%;
+      max-width: 450px;
+      margin: 15px auto;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      display: block;
+      font-size: 16px;
+    }
+    button {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      transition: 0.3s;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .severity {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+    .mild { color: green; }
+    .moderate { color: orange; }
+    .critical { color: red; }
+    ul {
+      text-align: left;
+      max-width: 600px;
+      margin: 20px auto;
+    }
+    ul li {
+      padding: 8px;
+      font-size: 16px;
+    }
+    .intro {
+      font-size: 18px;
+      line-height: 1.8;
+      color: #555;
+      text-align: justify;
+      padding: 10px;
+      background: #e8f4fd;
+      border-radius: 10px;
+      margin-top: 20px;
+    }
+    footer {
+      text-align: center;
+      padding: 15px;
+      background-color: #0066cc;
+      color: white;
+      font-size: 14px;
+      margin-top: 50px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>SympTRACK - AI Symptom Checker</h1>
+  </header>
+
+  <!-- Page 1: Home / Introduction / Input -->
+  <div id="page1" class="section" style="display:block;">
+    <h2>Welcome to SympTRACK</h2>
+    <div class="intro">
+      SympTRACK is an AI-powered health symptom checker designed to help underserved and remote communities 
+      perform preliminary health checks. It provides offline diagnosis, preventive tips, and can connect you 
+      with nearby healthcare centers. Our mission is to bridge the healthcare gap with smart technology.
+    </div>
+
+    <h3>Check Your Symptoms Below</h3>
+    <input type="text" id="symptomInput" placeholder="Type your symptoms...">
+    <button onclick="startVoiceInput()">🎤 Speak Symptoms</button>
+    <button onclick="analyzeSymptom()">Check</button>
+  </div>
+
+  <!-- Page 2: Diagnosis Result -->
+  <div id="page2" class="section">
+    <h2>Diagnosis Result</h2>
+    <p class="severity" id="severityOutput"></p>
+
+    <h3>Homemade Remedies Suggested:</h3>
+    <ul>
+      <li>Drink warm water with turmeric</li>
+      <li>Steam inhalation twice daily</li>
+      <li>Include ginger and honey in your diet</li>
+      <li>Gargle with salt water for throat relief</li>
+    </ul>
+
+    <button onclick="readMedication()">🔊 Read Remedies Aloud</button>
+    <button onclick="goToPage('page3')">Connect Care ➔</button>
+  </div>
+
+  <!-- Page 3: Clinics & Medications -->
+  <div id="page3" class="section">
+    <h2>Nearby Clinics & Medications</h2>
+    <input type="text" id="location" placeholder="Enter your location...">
+    <button onclick="showClinics()">Show Nearby Clinics</button>
+    <div id="clinicsResult"></div>
+
+    <button onclick="alert('Fetching medications...')">💊 Get Medications</button>
+    <button onclick="goToPage('page4')">🏥 Consult Doctor</button>
+  </div>
+
+  <!-- Page 4: Hospital Guidance -->
+  <div id="page4" class="section">
+    <h2>Hospital Guidance</h2>
+    <p>If your condition is critical, please visit the nearest hospital immediately.</p>
+    <ul>
+      <li>ABC General Hospital - 3km away</li>
+      <li>XYZ Multi-Speciality Hospital - 5km away</li>
+    </ul>
+    <p>For ambulance service, call: <strong>108</strong></p>
+  </div>
+
+  <footer>
+    © 2025 SympTRACK | Designed for Community Health Support
+  </footer>
+
+  <script>
+    // Navigation between pages
+    function goToPage(pageId) {
+      document.querySelectorAll('.section').forEach(sec => sec.style.display = 'none');
+      document.getElementById(pageId).style.display = 'block';
+      window.scrollTo(0, 0);
+    }
+
+    // Voice input (Web Speech API)
+    function startVoiceInput() {
+      const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+      recognition.onresult = function(event) {
+        document.getElementById('symptomInput').value = event.results[0][0].transcript;
+      };
+      recognition.start();
+    }
+
+    // Analyze and assign severity
+    function analyzeSymptom() {
+      const symptoms = document.getElementById('symptomInput').value;
+      if (symptoms.trim() === '') {
+        alert('Please enter your symptoms or use the speech option.');
+        return;
+      }
+
+      const severityLevels = ['mild', 'moderate', 'critical'];
+      const random = severityLevels[Math.floor(Math.random() * 3)];
+
+      const output = document.getElementById('severityOutput');
+      if (random === 'mild') {
+        output.innerHTML = '🟢 Mild Condition - Home Care Suggested';
+        output.className = 'severity mild';
+      } else if (random === 'moderate') {
+        output.innerHTML = '🟡 Moderate Condition - Consult Soon';
+        output.className = 'severity moderate';
+      } else {
+        output.innerHTML = '🔴 Critical Condition - Seek Immediate Help';
+        output.className = 'severity critical';
+      }
+
+      goToPage('page2');
+    }
+
+    // Text-to-Speech for medication
+    function readMedication() {
+      const speech = new SpeechSynthesisUtterance(
+        "Drink warm water with turmeric. Do steam inhalation twice a day. Include ginger and honey. Gargle with salt water."
+      );
+      window.speechSynthesis.speak(speech);
+    }
+
+    // Show dummy clinics
+    function showClinics() {
+      const location = document.getElementById('location').value;
+      if (location.trim() === '') {
+        alert('Please enter your location.');
+        return;
+      }
+      document.getElementById('clinicsResult').innerHTML = `
+        <h4>Clinics near ${location}:</h4>
+        <ul>
+          <li>ABC Hospital</li>
+          <li>XYZ Clinic</li>
+          <li>City Care Medical Center</li>
+        </ul>`;
+    }
+  </script>
+
+</body>
+</html>
