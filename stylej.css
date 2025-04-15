@@ -1,0 +1,118 @@
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+    line-height: 1.6;
+}
+
+header {
+    background-color: #9b4ba0;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+header h1 {
+    margin-bottom: 5px;
+}
+
+main {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.input-section {
+    margin-bottom: 30px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.input-section h2 {
+    color: #333;
+    margin-top: 0;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 8px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #555;
+}
+
+textarea,
+input[type="file"] {
+    width: calc(100% - 22px);
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+textarea {
+    resize: vertical;
+}
+
+button {
+    background-color: #28a745;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+.submit-button {
+    display: block;
+    width: 100%;
+    margin-top: 20px;
+}
+
+#start-record-btn {
+    background-color: #8d14a5;
+}
+
+#start-record-btn:hover {
+    background-color: #a848bc;
+}
+
+#recording-status {
+    margin-top: 5px;
+    font-style: italic;
+    color: #777;
+}
+
+small {
+    display: block;
+    margin-top: 5px;
+    color: #777;
+    font-size: 0.9em;
+}
+
+footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #333;
+    color: white;
+    margin-top: 30px;
+    border-radius: 0 0 8px 8px;
+}

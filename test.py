@@ -3,7 +3,6 @@ import tensorflow as tf
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
 import pandas as pd
-
 # ✅ Sample Data
 data = {
     'Fever': [1, 1, 0, 1],
