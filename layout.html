@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+ <html lang="en"> 
+    <head>
+         <meta charset="UTF-8" /> 
+         <meta name="viewport" content="width=device-width, initial-scale=1.0"/> 
+         <title>SympTrack Services</title> 
+         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+          <style> 
+          body {
+             margin: 0; 
+             padding: 2rem;
+              font-family: 'Inter', sans-serif;
+               background: #f3f0ff; 
+               /* soft lavender */
+                color: #2c2c2c; 
+            }
+   
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 0.5rem;
+      color: #3d246c;
+    }
+    
+    p.subheading {
+      text-align: center;
+      color: #6b6b6b;
+      margin-bottom: 2rem;
+    }
+    
+    .grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      justify-content: center;
+    }
+    
+    .card {
+      background-color: #fff;
+      border-radius: 1rem;
+      border: 1px solid #d6ccfa;
+      box-shadow: 0 4px 12px rgba(61, 36, 108, 0.08);
+      padding: 1.7rem;
+      width: 300px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 8px 20px rgba(61, 36, 108, 0.15);
+    }
+    
+    .card-icon {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(45deg, #16a085, #3498db);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .card-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: #3d246c;
+    }
+    
+    .card-desc {
+      font-size: 0.95rem;
+      color: #555;
+      margin-bottom: 1.2rem;
+    }
+    
+    .card a {
+      background-color: #9c6cf0;
+      color: white;
+      padding: 0.4rem 1rem;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: background-color 0.2s ease;
+    }
+    
+    .card a:hover {
+      background-color: #7c4df0;
+    }
+    
+    @media (max-width: 768px) {
+      .card {
+        width: 100%;
+      }
+    }
+    </style> </head> <body> <h1>SympTrack Services</h1> <p class="subheading">Track and manage your health effortlessly — completely offline</p> <div class="grid"> <div class="card"> <div class="card-icon">📋</div> <div class="card-title">Log Symptoms</div> <div class="card-desc">Record daily symptoms and their severity</div> <a href="#">Learn more</a> </div>
+  
+    <div class="card">
+      <div class="card-icon">🤖</div>
+      <div class="card-title">Predict Conditions</div>
+      <div class="card-desc">Get offline AI-powered condition predictions</div>
+      <a href="#">Learn more</a>
+    </div>
+    
+    <div class="card">
+      <div class="card-icon">📊</div>
+      <div class="card-title">Symptom Trends</div>
+      <div class="card-desc">Visualize symptom frequency and intensity</div>
+      <a href="#">Learn more</a>
+    </div>
+    
+    <div class="card">
+      <div class="card-icon">📆</div>
+      <div class="card-title">Symptom History</div>
+      <div class="card-desc">Browse past logs day-by-day or monthly</div>
+      <a href="#">Learn more</a>
+    </div>
+    
+    <div class="card">
+      <div class="card-icon">💡</div>
+      <div class="card-title">Health Tips</div>
+      <div class="card-desc">View smart suggestions based on your condition</div>
+      <a href="#">Learn more</a>
+    </div>
+    
+    <div class="card">
+      <div class="card-icon">📤</div>
+      <div class="card-title">Export Data</div>
+      <div class="card-desc">Export symptom history as PDF or CSV</div>
+      <a href="#">Learn more</a>
+    </div>
+    </div> </body> </html>
