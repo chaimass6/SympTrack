@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SympTrack – Symptom Summary</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 1rem;
+            background: #f4f6f8;
+            color: #333;
+        }
+
+        .header {
+            background-color: #0066cc;
+            color: white;
+            padding: 1.2rem;
+            text-align: center;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.2rem;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            max-width: 75vw;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .section-title {
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 0.75rem;
+        }
+
+        ul {
+            padding-left: 1.2rem;
+        }
+
+        .actions button {
+            margin: 0.5rem 0.5rem 0 0;
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .save-btn {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .export-btn {
+            background-color: #17a2b8;
+            color: white;
+        }
+
+        .speak-btn {
+            background-color: #ffc107;
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <h2>🩺 Your Symptom Summary</h2>
+        <p>🕒 Date: April 15, 2025</p>
+    </div>
+
+    <div class="card">
+        <div class="section-title">📝 Symptoms Tracked:</div>
+        <ul>
+            <li>🤒 Fever</li>
+            <li>🤕 Headache</li>
+            <li>🤢 Nausea</li>
+            <li>😴 Fatigue</li>
+            <li>🌡️ Temperature: 101.4°F</li>
+        </ul>
+        <p>🟠 Severity: Moderate</p>
+        <p>🕒 Duration: 2 Days</p>
+        <p>📝 Notes: Feeling weak since morning, appetite reduced, slightly dehydrated.</p>
+    </div>
+
+    <div class="card">
+        <div class="section-title">🔍 Predicted Conditions:</div>
+        <ul>
+            <li>🧠 Viral Fever – 82% Confidence</li>
+            <li>🥡 Food Poisoning – 12%</li>
+            <li>🦟 Dengue – 6%</li>
+        </ul>
+        <p>📌 This is a basic offline prediction. Consult a doctor for a confirmed diagnosis.</p>
+    </div>
+
+    <div class="card">
+        <div class="section-title">✅ Suggested Actions:</div>
+        <ul>
+            <li>💧 Drink at least 3 liters of water daily</li>
+            <li>🛏️ Take rest for the next 2 days</li>
+            <li>🍽️ Avoid oily and heavy food</li>
+            <li>🌡️ Take paracetamol if fever exceeds 100°F</li>
+            <li>👀 Monitor for signs like rashes or joint pain</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <div class="section-title">📈 Past Episodes:</div>
+        <p>📅 Similar episode logged: March 30, 2025</p>
+        <p>🔄 Recurrence: 3 similar events in the past 2 months</p>
+        <p>📊 Trend: Fever and nausea commonly co-occurred</p>
+    </div>
+
+    <div class="card actions">
+        <button class="save-btn">💾 Save to Log</button>
+        <button class="export-btn">📤 Export as PDF</button>
+        <button class="speak-btn" onclick="readSummary()">🔊 Read Summary</button>
+    </div>
+
+    <script>
+        function readSummary() {
+            const msg = new SpeechSynthesisUtterance();
+            msg.text = `Symptom summary for April 15th. 
+      The user reported: fever, headache, nausea, and fatigue. 
+      Severity is moderate, lasting two days. Notes mention weakness and dehydration.
+      Predicted conditions: Viral Fever at 82 percent confidence, Food Poisoning at 12 percent, and Dengue at 6 percent.
+      Suggested actions include: drinking water, resting, taking paracetamol if fever is high, and monitoring for additional symptoms.
+      A similar episode occurred on March 30th.`;
+            msg.lang = 'en-US';
+            window.speechSynthesis.speak(msg);
+        }
+    </script>
+
+</body>
+
+</html>
