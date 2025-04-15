@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Symptom Input</title>
+    <link rel="stylesheet" href="stylej.css">
+</head>
+<body>
+    <header>
+        <h1>Tell Us About Your Symptoms</h1>
+        <p>Please describe your problems in detail.</p>
+    </header>
+
+    <main>
+        <section class="input-section">
+            <h2>Describe Your Symptoms (Text)</h2>
+            <label for="symptoms-text">Enter your symptoms:</label>
+            <textarea id="symptoms-text" name="symptoms-text" rows="5" placeholder="e.g., I have a persistent cough and a sore throat..."></textarea>
+        </section>
+
+        <section class="input-section">
+            <h2>Describe Your Symptoms (Voice)</h2>
+            <p>Click the button below and speak clearly.</p>
+            <button id="start-record-btn">Start Recording</button>
+            <p id="recording-status">Not recording</p>
+            <textarea id="symptoms-voice" name="symptoms-voice" rows="3" placeholder="Your spoken symptoms will appear here..."></textarea>
+            <small>Note: Voice input requires browser support and user permission.</small>
+        </section>
+
+        <section class="input-section">
+            <h2>Upload Image (Optional)</h2>
+            <label for="symptoms-image">Upload an image that might be relevant:</label>
+            <input type="file" id="symptoms-image" name="symptoms-image" accept="image/*">
+            <small>Supported file types: JPG, PNG, GIF.</small>
+        </section>
+
+        <button type="submit" class="submit-button">Submit Symptoms</button>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Symptom Analysis Tool</p>
+    </footer>
+
+    </body>
+</html>
