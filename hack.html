@@ -77,47 +77,17 @@
         <p>🕒 Date: April 15, 2025</p>
     </div>
 
+    <!-- New Symptom Lookup Section -->
     <div class="card">
-        <div class="section-title">📝 Symptoms Tracked:</div>
-        <ul>
-            <li>🤒 Fever</li>
-            <li>🤕 Headache</li>
-            <li>🤢 Nausea</li>
-            <li>😴 Fatigue</li>
-            <li>🌡️ Temperature: 101.4°F</li>
-        </ul>
-        <p>🟠 Severity: Moderate</p>
-        <p>🕒 Duration: 2 Days</p>
-        <p>📝 Notes: Feeling weak since morning, appetite reduced, slightly dehydrated.</p>
+        <div class="section-title">🔎 Search Symptom Info:</div>
+        <input type="text" id="symptomInput" placeholder="e.g. Fever, Headache" style="padding: 0.5rem; width: 60%; font-size: 1rem;" />
+        <button onclick="showSymptomInfo()" class="export-btn" style="margin-left: 0.5rem;">🔍 Show Info</button>
+
+        <div id="resultArea" style="margin-top: 1.2rem;"></div>
     </div>
 
-    <div class="card">
-        <div class="section-title">🔍 Predicted Conditions:</div>
-        <ul>
-            <li>🧠 Viral Fever – 82% Confidence</li>
-            <li>🥡 Food Poisoning – 12%</li>
-            <li>🦟 Dengue – 6%</li>
-        </ul>
-        <p>📌 This is a basic offline prediction. Consult a doctor for a confirmed diagnosis.</p>
-    </div>
-
-    <div class="card">
-        <div class="section-title">✅ Suggested Actions:</div>
-        <ul>
-            <li>💧 Drink at least 3 liters of water daily</li>
-            <li>🛏️ Take rest for the next 2 days</li>
-            <li>🍽️ Avoid oily and heavy food</li>
-            <li>🌡️ Take paracetamol if fever exceeds 100°F</li>
-            <li>👀 Monitor for signs like rashes or joint pain</li>
-        </ul>
-    </div>
-
-    <div class="card">
-        <div class="section-title">📈 Past Episodes:</div>
-        <p>📅 Similar episode logged: March 30, 2025</p>
-        <p>🔄 Recurrence: 3 similar events in the past 2 months</p>
-        <p>📊 Trend: Fever and nausea commonly co-occurred</p>
-    </div>
+    <!-- Existing Cards Below -->
+    <!-- ... Your other symptom summary / prediction cards go here ... -->
 
     <div class="card actions">
         <button class="save-btn">💾 Save to Log</button>
@@ -126,19 +96,85 @@
     </div>
 
     <script>
+        const symptomData = {
+            "fever": {
+                precautions: [
+                    "Rest well and avoid physical activity",
+                    "Drink plenty of fluids (3+ liters)",
+                    "Wear light clothes and stay cool"
+                ],
+                medicines: [
+                    "Paracetamol (500mg every 6 hours if needed)",
+                    "Ibuprofen (only if no stomach issues)"
+                ]
+            },
+            "headache": {
+                precautions: [
+                    "Get enough sleep and reduce screen time",
+                    "Stay hydrated",
+                    "Avoid loud noises and bright lights"
+                ],
+                medicines: [
+                    "Paracetamol",
+                    "Ibuprofen",
+                    "Caffeine + Paracetamol (for migraines)"
+                ]
+            },
+            "nausea": {
+                precautions: [
+                    "Eat light, bland foods (like bananas or toast)",
+                    "Avoid greasy or spicy food",
+                    "Sip ORS or water frequently"
+                ],
+                medicines: [
+                    "Ondansetron (4mg as needed)",
+                    "Domperidone (for gastric-related nausea)"
+                ]
+            },
+            "fatigue": {
+                precautions: [
+                    "Take proper rest and sleep",
+                    "Eat iron and protein-rich foods",
+                    "Stay hydrated"
+                ],
+                medicines: [
+                    "Vitamin B12 supplements",
+                    "Iron supplements (if deficient)"
+                ]
+            }
+        };
+
+        function showSymptomInfo() {
+            const input = document.getElementById('symptomInput').value.trim().toLowerCase();
+            const result = symptomData[input];
+
+            const resultArea = document.getElementById('resultArea');
+            resultArea.innerHTML = '';
+
+            if (result) {
+                let html = `<div class="section-title">🩺 Info for: ${input.charAt(0).toUpperCase() + input.slice(1)}</div>`;
+                html += `<strong>✅ Precautions:</strong><ul>${result.precautions.map(p => `<li>${p}</li>`).join('')}</ul>`;
+                html += `<strong>💊 Medicines:</strong><ul>${result.medicines.map(m => `<li>${m}</li>`).join('')}</ul>`;
+                resultArea.innerHTML = html;
+            } else {
+                resultArea.innerHTML = `<p style="color: #cc0000;">❌ No data found for "${input}". Try 'Fever', 'Nausea', 'Fatigue', or 'Headache'.</p>`;
+            }
+        }
+
         function readSummary() {
             const msg = new SpeechSynthesisUtterance();
             msg.text = `Symptom summary for April 15th. 
-      The user reported: fever, headache, nausea, and fatigue. 
-      Severity is moderate, lasting two days. Notes mention weakness and dehydration.
-      Predicted conditions: Viral Fever at 82 percent confidence, Food Poisoning at 12 percent, and Dengue at 6 percent.
-      Suggested actions include: drinking water, resting, taking paracetamol if fever is high, and monitoring for additional symptoms.
-      A similar episode occurred on March 30th.`;
+                The user reported: fever, headache, nausea, and fatigue. 
+                Severity is moderate, lasting two days. Notes mention weakness and dehydration.
+                Predicted conditions: Viral Fever at 82 percent confidence, Food Poisoning at 12 percent, and Dengue at 6 percent.
+                Suggested actions include: drinking water, resting, taking paracetamol if fever is high, and monitoring for additional symptoms.
+                A similar episode occurred on March 30th.`;
             msg.lang = 'en-US';
             window.speechSynthesis.speak(msg);
         }
     </script>
 
 </body>
+
 
 </html>
