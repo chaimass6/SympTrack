@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SympTrack – Symptom Summary</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 1rem;
+            background: #f4f6f8;
+            color: #333;
+        }
+
+        .header {
+            background-color: #0066cc;
+            color: white;
+            padding: 1.2rem;
+            text-align: center;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.2rem;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            max-width: 75vw;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .section-title {
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 0.75rem;
+        }
+
+        ul {
+            padding-left: 1.2rem;
+        }
+
+        .actions button {
+            margin: 0.5rem 0.5rem 0 0;
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .save-btn {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .export-btn {
+            background-color: #17a2b8;
+            color: white;
+        }
+
+        .speak-btn {
+            background-color: #ffc107;
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <h2>🩺 Your Symptom Summary</h2>
+        <p>🕒 Date: April 15, 2025</p>
+    </div>
+
+    <!-- New Symptom Lookup Section -->
+    <div class="card">
+        <div class="section-title">🔎 Search Symptom Info:</div>
+        <input type="text" id="symptomInput" placeholder="e.g. Fever, Headache" style="padding: 0.5rem; width: 60%; font-size: 1rem;" />
+        <button onclick="showSymptomInfo()" class="export-btn" style="margin-left: 0.5rem;">🔍 Show Info</button>
+
+        <div id="resultArea" style="margin-top: 1.2rem;"></div>
+    </div>
+
+    <div class="card actions">
+        <button class="save-btn">💾 Save to Log</button>
+        <button class="export-btn">📤 Export as PDF</button>
+        <button class="speak-btn" onclick="readSummary()">🔊 Read Summary</button>
+    </div>
+
+    <script>
+        const symptomData = {
+            "fever": {
+                precautions: [
+                    "Rest well and avoid physical activity",
+                    "Drink plenty of fluids (3+ liters)",
+                    "Wear light clothes and stay cool"
+                ],
+                medicines: [
+                    "Paracetamol (500mg every 6 hours if needed)",
+                    "Ibuprofen (only if no stomach issues)"
+                ]
+            },
+            "headache": {
+                precautions: [
+                    "Get enough sleep and reduce screen time",
+                    "Stay hydrated",
+                    "Avoid loud noises and bright lights"
+                ],
+                medicines: [
+                    "Paracetamol",
+                    "Ibuprofen",
+                    "Caffeine + Paracetamol (for migraines)"
+                ]
+            },
+            "nausea": {
+                precautions: [
+                    "Eat light, bland foods (like bananas or toast)",
+                    "Avoid greasy or spicy food",
+                    "Sip ORS or water frequently"
+                ],
+                medicines: [
+                    "Ondansetron (4mg as needed)",
+                    "Domperidone (for gastric-related nausea)"
+                ]
+            },
+            "fatigue": {
+                precautions: [
+                    "Take proper rest and sleep",
+                    "Eat iron and protein-rich foods",
+                    "Stay hydrated"
+                ],
+                medicines: [
+                    "Vitamin B12 supplements",
+                    "Iron supplements (if deficient)"
+                ]
+            },
+            "cough": {
+                precautions: [
+                    "Drink warm fluids",
+                    "Avoid cold and dusty environments",
+                    "Use a humidifier"
+                ],
+                medicines: [
+                    "Cough syrup with dextromethorphan",
+                    "Honey + warm water",
+                    "Steam inhalation"
+                ]
+            },
+            "cold": {
+                precautions: [
+                    "Rest and sleep well",
+                    "Drink hot soups and stay warm",
+                    "Avoid chilled foods"
+                ],
+                medicines: [
+                    "Paracetamol",
+                    "Antihistamines like cetirizine",
+                    "Decongestants like pseudoephedrine"
+                ]
+            },
+            "diarrhea": {
+                precautions: [
+                    "Drink ORS frequently",
+                    "Avoid dairy and oily food",
+                    "Maintain good hygiene"
+                ],
+                medicines: [
+                    "ORS solution",
+                    "Loperamide (if needed)",
+                    "Zinc supplements"
+                ]
+            },
+            "vomiting": {
+                precautions: [
+                    "Rest the stomach (no food for few hours)",
+                    "Sip clear fluids slowly",
+                    "Avoid strong odors"
+                ],
+                medicines: [
+                    "Ondansetron",
+                    "Domperidone"
+                ]
+            },
+            "dizziness": {
+                precautions: [
+                    "Avoid sudden movements",
+                    "Sit or lie down when dizzy",
+                    "Hydrate regularly"
+                ],
+                medicines: [
+                    "Meclizine (for motion sickness)",
+                    "Promethazine (if nausea is also present)"
+                ]
+            },
+            "sore throat": {
+                precautions: [
+                    "Gargle with warm salt water",
+                    "Avoid cold drinks",
+                    "Use throat lozenges"
+                ],
+                medicines: [
+                    "Paracetamol",
+                    "Throat lozenges",
+                    "Antibiotics (if bacterial)"
+                ]
+            }
+        };
+
+        function showSymptomInfo() {
+            const input = document.getElementById('symptomInput').value.trim().toLowerCase();
+            const result = symptomData[input];
+
+            const resultArea = document.getElementById('resultArea');
+            resultArea.innerHTML = '';
+
+            if (result) {
+                let html = `<div class="section-title">🩺 Info for: ${input.charAt(0).toUpperCase() + input.slice(1)}</div>`;
+                html += `<strong>✅ Precautions:</strong><ul>${result.precautions.map(p => `<li>${p}</li>`).join('')}</ul>`;
+                html += `<strong>💊 Medicines:</strong><ul>${result.medicines.map(m => `<li>${m}</li>`).join('')}</ul>`;
+                resultArea.innerHTML = html;
+            } else {
+                resultArea.innerHTML = `<p style="color: #cc0000;">❌ No data found for "${input}". Try common terms like 'Fever', 'Nausea', 'Fatigue', etc.</p>`;
+            }
+        }
+
+        function readSummary() {
+            const msg = new SpeechSynthesisUtterance();
+            msg.text = `Symptom summary for April 15th. 
+                The user reported: fever, headache, nausea, and fatigue. 
+                Severity is moderate, lasting two days. Notes mention weakness and dehydration.
+                Predicted conditions: Viral Fever at 82 percent confidence, Food Poisoning at 12 percent, and Dengue at 6 percent.
+                Suggested actions include: drinking water, resting, taking paracetamol if fever is high, and monitoring for additional symptoms.
+                A similar episode occurred on March 30th.`;
+            msg.lang = 'en-US';
+            window.speechSynthesis.speak(msg);
+        }
+    </script>
+
+</body>
+
+</html>
