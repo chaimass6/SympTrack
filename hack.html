@@ -53,19 +53,9 @@
             font-size: 1rem;
         }
 
-        .save-btn {
-            background-color: #28a745;
-            color: white;
-        }
-
         .export-btn {
             background-color: #17a2b8;
             color: white;
-        }
-
-        .speak-btn {
-            background-color: #ffc107;
-            color: #333;
         }
     </style>
 </head>
@@ -74,10 +64,10 @@
 
     <div class="header">
         <h2>🩺 Your Symptom Summary</h2>
-        <p>🕒 Date: April 15, 2025</p>
+        <p id="currentDate">🕒 Loading date...</p>
     </div>
 
-    <!-- New Symptom Lookup Section -->
+    <!-- Symptom Lookup Section -->
     <div class="card">
         <div class="section-title">🔎 Search Symptom Info:</div>
         <input type="text" id="symptomInput" placeholder="e.g. Fever, Headache" style="padding: 0.5rem; width: 60%; font-size: 1rem;" />
@@ -86,16 +76,22 @@
         <div id="resultArea" style="margin-top: 1.2rem;"></div>
     </div>
 
-    <!-- Existing Cards Below -->
-    <!-- ... Your other symptom summary / prediction cards go here ... -->
-
-    <div class="card actions">
-        <button class="save-btn">💾 Save to Log</button>
-        <button class="export-btn">📤 Export as PDF</button>
-        <button class="speak-btn" onclick="readSummary()">🔊 Read Summary</button>
-    </div>
-
     <script>
+        // Function to update date display
+        function updateCurrentDate() {
+            const now = new Date();
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            };
+            document.getElementById('currentDate').textContent = `🕒 ${now.toLocaleDateString('en-US', options)}`;
+        }
+
+        // Call the function when page loads
+        window.onload = updateCurrentDate;
+
         const symptomData = {
             "fever": {
                 precautions: [
@@ -141,6 +137,76 @@
                     "Vitamin B12 supplements",
                     "Iron supplements (if deficient)"
                 ]
+            },
+            "cough": {
+                precautions: [
+                    "Drink warm fluids",
+                    "Avoid cold and dusty environments",
+                    "Use a humidifier"
+                ],
+                medicines: [
+                    "Cough syrup with dextromethorphan",
+                    "Honey + warm water",
+                    "Steam inhalation"
+                ]
+            },
+            "cold": {
+                precautions: [
+                    "Rest and sleep well",
+                    "Drink hot soups and stay warm",
+                    "Avoid chilled foods"
+                ],
+                medicines: [
+                    "Paracetamol",
+                    "Antihistamines like cetirizine",
+                    "Decongestants like pseudoephedrine"
+                ]
+            },
+            "diarrhea": {
+                precautions: [
+                    "Drink ORS frequently",
+                    "Avoid dairy and oily food",
+                    "Maintain good hygiene"
+                ],
+                medicines: [
+                    "ORS solution",
+                    "Loperamide (if needed)",
+                    "Zinc supplements"
+                ]
+            },
+            "vomiting": {
+                precautions: [
+                    "Rest the stomach (no food for few hours)",
+                    "Sip clear fluids slowly",
+                    "Avoid strong odors"
+                ],
+                medicines: [
+                    "Ondansetron",
+                    "Domperidone"
+                ]
+            },
+            "dizziness": {
+                precautions: [
+                    "Avoid sudden movements",
+                    "Sit or lie down when dizzy",
+                    "Hydrate regularly"
+                ],
+                medicines: [
+                    "Meclizine (for motion sickness)",
+                    "Promethazine (if nausea is also present)"
+                ]
+            },
+            "sore throat": {
+                precautions: [
+                    "Gargle with warm salt water",
+                    "Avoid cold drinks",
+                    "Use throat lozenges"
+                ],
+                medicines: [
+                    "Paracetamol",
+                    "Throat lozenges",
+                    "Antibiotics (if bacterial)"
+                ]
             }
         };
 
@@ -157,24 +223,11 @@
                 html += `<strong>💊 Medicines:</strong><ul>${result.medicines.map(m => `<li>${m}</li>`).join('')}</ul>`;
                 resultArea.innerHTML = html;
             } else {
-                resultArea.innerHTML = `<p style="color: #cc0000;">❌ No data found for "${input}". Try 'Fever', 'Nausea', 'Fatigue', or 'Headache'.</p>`;
+                resultArea.innerHTML = `<p style="color: #cc0000;">❌ No data found for "${input}". Try common terms like 'Fever', 'Nausea', 'Fatigue', etc.</p>`;
             }
-        }
-
-        function readSummary() {
-            const msg = new SpeechSynthesisUtterance();
-            msg.text = `Symptom summary for April 15th. 
-                The user reported: fever, headache, nausea, and fatigue. 
-                Severity is moderate, lasting two days. Notes mention weakness and dehydration.
-                Predicted conditions: Viral Fever at 82 percent confidence, Food Poisoning at 12 percent, and Dengue at 6 percent.
-                Suggested actions include: drinking water, resting, taking paracetamol if fever is high, and monitoring for additional symptoms.
-                A similar episode occurred on March 30th.`;
-            msg.lang = 'en-US';
-            window.speechSynthesis.speak(msg);
         }
     </script>
 
 </body>
-
 
 </html>
