@@ -44,7 +44,7 @@
             padding-left: 1.2rem;
         }
 
-        .actions button {
+        button {
             margin: 0.5rem 0.5rem 0 0;
             padding: 0.6rem 1.2rem;
             border: none;
@@ -56,6 +56,12 @@
         .export-btn {
             background-color: #17a2b8;
             color: white;
+        }
+
+        .speak-btn {
+            background-color: #ffc107;
+            color: #333;
+            margin-top: 1rem;
         }
     </style>
 </head>
@@ -74,6 +80,7 @@
         <button onclick="showSymptomInfo()" class="export-btn" style="margin-left: 0.5rem;">🔍 Show Info</button>
 
         <div id="resultArea" style="margin-top: 1.2rem;"></div>
+        <button id="speakButton" class="speak-btn" onclick="readSummary()" style="display: none;">🔊 Read Summary</button>
     </div>
 
     <script>
@@ -210,21 +217,45 @@
             }
         };
 
+        let currentSymptom = null;
+
         function showSymptomInfo() {
             const input = document.getElementById('symptomInput').value.trim().toLowerCase();
             const result = symptomData[input];
+            currentSymptom = input;
 
             const resultArea = document.getElementById('resultArea');
+            const speakButton = document.getElementById('speakButton');
             resultArea.innerHTML = '';
+            speakButton.style.display = 'none';
 
             if (result) {
                 let html = `<div class="section-title">🩺 Info for: ${input.charAt(0).toUpperCase() + input.slice(1)}</div>`;
                 html += `<strong>✅ Precautions:</strong><ul>${result.precautions.map(p => `<li>${p}</li>`).join('')}</ul>`;
                 html += `<strong>💊 Medicines:</strong><ul>${result.medicines.map(m => `<li>${m}</li>`).join('')}</ul>`;
                 resultArea.innerHTML = html;
+                speakButton.style.display = 'block';
             } else {
                 resultArea.innerHTML = `<p style="color: #cc0000;">❌ No data found for "${input}". Try common terms like 'Fever', 'Nausea', 'Fatigue', etc.</p>`;
             }
+        }
+
+        function readSummary() {
+            if (!currentSymptom || !symptomData[currentSymptom]) return;
+            
+            const symptom = currentSymptom.charAt(0).toUpperCase() + currentSymptom.slice(1);
+            const precautions = symptomData[currentSymptom].precautions.join('. ');
+            const medicines = symptomData[currentSymptom].medicines.join('. ');
+            
+            const msg = new SpeechSynthesisUtterance();
+            msg.text = `Information for ${symptom}. 
+                        Precautions: ${precautions}.
+                        Medicines: ${medicines}.`;
+            msg.lang = 'en-US';
+            
+            // Stop any current speech before starting new one
+            window.speechSynthesis.cancel();
+            window.speechSynthesis.speak(msg);
         }
     </script>
 
