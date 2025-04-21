@@ -44,18 +44,13 @@
             padding-left: 1.2rem;
         }
 
-        .actions button {
+        button {
             margin: 0.5rem 0.5rem 0 0;
             padding: 0.6rem 1.2rem;
             border: none;
             border-radius: 6px;
             cursor: pointer;
             font-size: 1rem;
-        }
-
-        .save-btn {
-            background-color: #28a745;
-            color: white;
         }
 
         .export-btn {
@@ -66,6 +61,7 @@
         .speak-btn {
             background-color: #ffc107;
             color: #333;
+            margin-top: 1rem;
         }
     </style>
 </head>
@@ -74,25 +70,35 @@
 
     <div class="header">
         <h2>🩺 Your Symptom Summary</h2>
-        <p>🕒 Date: April 15, 2025</p>
+        <p id="currentDate">🕒 Loading date...</p>
     </div>
 
-    <!-- New Symptom Lookup Section -->
+    <!-- Symptom Lookup Section -->
     <div class="card">
         <div class="section-title">🔎 Search Symptom Info:</div>
         <input type="text" id="symptomInput" placeholder="e.g. Fever, Headache" style="padding: 0.5rem; width: 60%; font-size: 1rem;" />
         <button onclick="showSymptomInfo()" class="export-btn" style="margin-left: 0.5rem;">🔍 Show Info</button>
 
         <div id="resultArea" style="margin-top: 1.2rem;"></div>
-    </div>
-
-    <div class="card actions">
-        <button class="save-btn">💾 Save to Log</button>
-        <button class="export-btn">📤 Export as PDF</button>
-        <button class="speak-btn" onclick="readSummary()">🔊 Read Summary</button>
+        <button id="speakButton" class="speak-btn" onclick="readSummary()" style="display: none;">🔊 Read Summary</button>
     </div>
 
     <script>
+        // Function to update date display
+        function updateCurrentDate() {
+            const now = new Date();
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            };
+            document.getElementById('currentDate').textContent = `🕒 ${now.toLocaleDateString('en-US', options)}`;
+        }
+
+        // Call the function when page loads
+        window.onload = updateCurrentDate;
+
         const symptomData = {
             "fever": {
                 precautions: [
@@ -208,35 +214,119 @@
                     "Throat lozenges",
                     "Antibiotics (if bacterial)"
                 ]
+            },
+            "snake bite": {
+                precautions: [
+                    "Keep the person calm and still",
+                    "Immobilize the bitten area",
+                    "Seek emergency medical help immediately"
+                ],
+                medicines: [
+                    "Snake antivenom",
+                    "Tetanus injection",
+                    "Pain relievers under medical supervision"
+                ]
+            },
+            "scorpion sting": {
+                precautions: [
+                    "Clean the sting area with soap and water",
+                    "Apply a cold compress",
+                    "Avoid home remedies and seek medical attention for severe symptoms"
+                ],
+                medicines: [
+                    "Scorpion antivenom (if severe)",
+                    "Pain relievers like ibuprofen",
+                    "Muscle relaxants (if spasms occur)"
+                ]
+            },
+            "dog bite": {
+                precautions: [
+                    "Clean the wound thoroughly with soap and water",
+                    "Avoid touching the wound with dirty hands",
+                    "Seek rabies vaccination as soon as possible"
+                ],
+                medicines: [
+                    "Rabies vaccine (post-exposure prophylaxis)",
+                    "Tetanus vaccine (if not updated)",
+                    "Antibiotics like amoxicillin-clavulanate"
+                ]
+            },
+            "malaria": {
+                precautions: [
+                    "Sleep under mosquito nets",
+                    "Use insect repellents and wear full sleeves",
+                    "Drain stagnant water near living areas"
+                ],
+                medicines: [
+                    "Artemisinin-based combination therapy (ACT)",
+                    "Chloroquine (for specific strains)",
+                    "Primaquine (for liver stage clearance)"
+                ]
+            },
+            "diabetes": {
+                precautions: [
+                    "Monitor blood sugar regularly",
+                    "Eat low-sugar, high-fiber diet",
+                    "Exercise regularly and avoid alcohol"
+                ],
+                medicines: [
+                    "Metformin",
+                    "Insulin injections (for Type 1 and advanced Type 2)",
+                    "Sulfonylureas (e.g., Glipizide)"
+                ]
+            },
+            "hypertension": {
+                precautions: [
+                    "Reduce salt and caffeine intake",
+                    "Exercise daily and manage stress",
+                    "Avoid smoking and limit alcohol"
+                ],
+                medicines: [
+                    "Amlodipine (calcium channel blocker)",
+                    "Lisinopril (ACE inhibitor)",
+                    "Losartan (angiotensin receptor blocker)"
+                ]
             }
         };
+
+        let currentSymptom = null;
 
         function showSymptomInfo() {
             const input = document.getElementById('symptomInput').value.trim().toLowerCase();
             const result = symptomData[input];
+            currentSymptom = input;
 
             const resultArea = document.getElementById('resultArea');
+            const speakButton = document.getElementById('speakButton');
             resultArea.innerHTML = '';
+            speakButton.style.display = 'none';
 
             if (result) {
                 let html = `<div class="section-title">🩺 Info for: ${input.charAt(0).toUpperCase() + input.slice(1)}</div>`;
                 html += `<strong>✅ Precautions:</strong><ul>${result.precautions.map(p => `<li>${p}</li>`).join('')}</ul>`;
                 html += `<strong>💊 Medicines:</strong><ul>${result.medicines.map(m => `<li>${m}</li>`).join('')}</ul>`;
                 resultArea.innerHTML = html;
+                speakButton.style.display = 'block';
             } else {
                 resultArea.innerHTML = `<p style="color: #cc0000;">❌ No data found for "${input}". Try common terms like 'Fever', 'Nausea', 'Fatigue', etc.</p>`;
             }
         }
 
         function readSummary() {
+            if (!currentSymptom || !symptomData[currentSymptom]) return;
+            
+            const symptom = currentSymptom.charAt(0).toUpperCase() + currentSymptom.slice(1);
+            const precautions = symptomData[currentSymptom].precautions.join('. ');
+            const medicines = symptomData[currentSymptom].medicines.join('. ');
+            
             const msg = new SpeechSynthesisUtterance();
-            msg.text = `Symptom summary for April 15th. 
-                The user reported: fever, headache, nausea, and fatigue. 
-                Severity is moderate, lasting two days. Notes mention weakness and dehydration.
-                Predicted conditions: Viral Fever at 82 percent confidence, Food Poisoning at 12 percent, and Dengue at 6 percent.
-                Suggested actions include: drinking water, resting, taking paracetamol if fever is high, and monitoring for additional symptoms.
-                A similar episode occurred on March 30th.`;
+            msg.text = `Information for ${symptom}. 
+                        Precautions: ${precautions}.
+                        Medicines: ${medicines}.`;
             msg.lang = 'en-US';
+            
+            // Stop any current speech before starting new one
+            window.speechSynthesis.cancel();
             window.speechSynthesis.speak(msg);
         }
     </script>
