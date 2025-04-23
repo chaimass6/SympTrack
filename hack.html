@@ -76,7 +76,7 @@
     <!-- Symptom Lookup Section -->
     <div class="card">
         <div class="section-title">🔎 Search Symptom Info:</div>
-        <input type="text" id="symptomInput" placeholder="e.g. Fever, Headache" style="padding: 0.5rem; width: 60%; font-size: 1rem;" />
+        <input type="text" id="symptomInput" placeholder="e.g. Fever, Headache, Rabies" style="padding: 0.5rem; width: 60%; font-size: 1rem;" />
         <button onclick="showSymptomInfo()" class="export-btn" style="margin-left: 0.5rem;">🔍 Show Info</button>
 
         <div id="resultArea" style="margin-top: 1.2rem;"></div>
@@ -100,6 +100,7 @@
         window.onload = updateCurrentDate;
 
         const symptomData = {
+            // Common Symptoms
             "fever": {
                 precautions: [
                     "Rest well and avoid physical activity",
@@ -123,52 +124,109 @@
                     "Caffeine + Paracetamol (for migraines)"
                 ]
             },
-            "nausea": {
+            
+            // Animal-Related Diseases
+            "rabies": {
                 precautions: [
-                    "Eat light, bland foods (like bananas or toast)",
-                    "Avoid greasy or spicy food",
-                    "Sip ORS or water frequently"
+                    "Vaccinate pets against rabies",
+                    "Avoid contact with stray/wild animals",
+                    "Wash animal bites with soap immediately"
                 ],
                 medicines: [
-                    "Ondansetron (4mg as needed)",
-                    "Domperidone (for gastric-related nausea)"
+                    "Rabies vaccine (post-exposure prophylaxis)",
+                    "Rabies Immunoglobulin (RIG)",
+                    "Emergency hospital care required"
                 ]
             },
-            "fatigue": {
+            "lyme disease": {
                 precautions: [
-                    "Take proper rest and sleep",
-                    "Eat iron and protein-rich foods",
-                    "Stay hydrated"
+                    "Use insect repellent (DEET)",
+                    "Wear long sleeves in wooded areas",
+                    "Check for ticks after outdoor activities"
                 ],
                 medicines: [
-                    "Vitamin B12 supplements",
-                    "Iron supplements (if deficient)"
+                    "Doxycycline (antibiotic)",
+                    "Amoxicillin (for children/pregnant women)",
+                    "Cefuroxime (alternative)"
                 ]
             },
-            "cough": {
+            "leptospirosis": {
                 precautions: [
-                    "Drink warm fluids",
-                    "Avoid cold and dusty environments",
-                    "Use a humidifier"
+                    "Avoid contaminated water",
+                    "Wear gloves when handling animals",
+                    "Vaccinate livestock/pets"
                 ],
                 medicines: [
-                    "Cough syrup with dextromethorphan",
-                    "Honey + warm water",
-                    "Steam inhalation"
+                    "Doxycycline (first-line treatment)",
+                    "Penicillin (alternative)",
+                    "IV fluids for severe cases"
                 ]
             },
-            "cold": {
+            "toxoplasmosis": {
                 precautions: [
-                    "Rest and sleep well",
-                    "Drink hot soups and stay warm",
-                    "Avoid chilled foods"
+                    "Avoid cleaning cat litter if pregnant",
+                    "Cook meat thoroughly",
+                    "Wash hands after gardening"
                 ],
                 medicines: [
-                    "Paracetamol",
-                    "Antihistamines like cetirizine",
-                    "Decongestants like pseudoephedrine"
+                    "Pyrimethamine + Sulfadiazine",
+                    "Folinic acid (to reduce side effects)",
+                    "Spiramycin (for pregnant women)"
                 ]
             },
+            
+            // Bird-Related Diseases
+            "avian flu": {
+                precautions: [
+                    "Avoid live bird markets",
+                    "Cook poultry thoroughly",
+                    "Use PPE when handling birds"
+                ],
+                medicines: [
+                    "Oseltamivir (Tamiflu)",
+                    "Zanamivir (Relenza)",
+                    "Hospitalization for severe cases"
+                ]
+            },
+            "psittacosis": {
+                precautions: [
+                    "Wash hands after handling birds",
+                    "Clean cages with disinfectant",
+                    "Avoid inhaling bird dust"
+                ],
+                medicines: [
+                    "Doxycycline (2 weeks)",
+                    "Azithromycin (alternative)"
+                ]
+            },
+            
+            // Marine Animal Injuries
+            "jellyfish sting": {
+                precautions: [
+                    "Avoid swimming in infested waters",
+                    "Wear protective clothing",
+                    "Don't touch dead jellyfish"
+                ],
+                medicines: [
+                    "Vinegar rinse (neutralizes venom)",
+                    "Hot water immersion (45°C/113°F)",
+                    "Pain relievers (paracetamol/ibuprofen)"
+                ]
+            },
+            "stonefish sting": {
+                precautions: [
+                    "Wear thick-soled shoes in shallow water",
+                    "Avoid touching reef fish",
+                    "Seek immediate medical help"
+                ],
+                medicines: [
+                    "Hot water immersion",
+                    "Stonefish antivenom",
+                    "Strong painkillers (morphine if needed)"
+                ]
+            },
+            
+            // Other Common Illnesses
             "diarrhea": {
                 precautions: [
                     "Drink ORS frequently",
@@ -181,38 +239,16 @@
                     "Zinc supplements"
                 ]
             },
-            "vomiting": {
+            "hypertension": {
                 precautions: [
-                    "Rest the stomach (no food for few hours)",
-                    "Sip clear fluids slowly",
-                    "Avoid strong odors"
+                    "Reduce salt and caffeine intake",
+                    "Exercise daily and manage stress",
+                    "Avoid smoking and limit alcohol"
                 ],
                 medicines: [
-                    "Ondansetron",
-                    "Domperidone"
-                ]
-            },
-            "dizziness": {
-                precautions: [
-                    "Avoid sudden movements",
-                    "Sit or lie down when dizzy",
-                    "Hydrate regularly"
-                ],
-                medicines: [
-                    "Meclizine (for motion sickness)",
-                    "Promethazine (if nausea is also present)"
-                ]
-            },
-            "sore throat": {
-                precautions: [
-                    "Gargle with warm salt water",
-                    "Avoid cold drinks",
-                    "Use throat lozenges"
-                ],
-                medicines: [
-                    "Paracetamol",
-                    "Throat lozenges",
-                    "Antibiotics (if bacterial)"
+                    "Amlodipine (calcium channel blocker)",
+                    "Lisinopril (ACE inhibitor)",
+                    "Losartan (angiotensin receptor blocker)"
                 ]
             }
         };
@@ -236,7 +272,7 @@
                 resultArea.innerHTML = html;
                 speakButton.style.display = 'block';
             } else {
-                resultArea.innerHTML = `<p style="color: #cc0000;">❌ No data found for "${input}". Try common terms like 'Fever', 'Nausea', 'Fatigue', etc.</p>`;
+                resultArea.innerHTML = `<p style="color: #cc0000;">❌ No data found for "${input}". Try: Fever, Rabies, Lyme Disease, Jellyfish Sting, etc.</p>`;
             }
         }
 
